@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhangxp.spring.security.bankend.mapper.UserMapper">
+    <resultMap id="MyUser" type="com.zhangxp.spring.security.bankend.vo.MyUser">
+        <result column="username"  property="username" />
+        <result column="password"  property="password" />
+        <collection property="authorities"  ofType="com.zhangxp.spring.security.bankend.entity.Role"
+                    autoMapping="true">
+            <result column="id" property="id"></result>
+            <result column="name" property="name"></result>
+        </collection>
+    </resultMap>
+
+    <select id="findUserByName" resultMap="MyUser">
+        select ur.username as username, ur.password as password, rl.id as id, rl.name as name from user ur
+        left join user_role url on ur.id = url.user_id
+        left join role rl on rl.id = url.role_id
+         where ur.username = #{username}
+    </select>
+</mapper>
